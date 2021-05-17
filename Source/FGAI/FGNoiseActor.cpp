@@ -1,5 +1,8 @@
 #include "FGNoiseActor.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
+#include "Actor.h"
+#include "EngineUtils.h"
 
 AFGNoiseActor::AFGNoiseActor()
 {
@@ -11,7 +14,9 @@ AFGNoiseActor::AFGNoiseActor()
 void AFGNoiseActor::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	//NoiseActorsList.Add(this);
+	
 	SetLifeSpan(0.4);	
 }
 

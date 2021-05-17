@@ -152,14 +152,8 @@ bool UFGVisionSensingComponent::IsObjectVisible(const FVector& Origin, const FVe
 		else
 		{
 			return false;
-		}					
-		/*UFGVisionSensingTargetComponent* Target = Hit.Actor->FindComponentByClass<UFGVisionSensingTargetComponent>();
-		if (Target)
-		{
-			//UE_LOG(LogTemp, Warning,TEXT("%s"), *output);
-			DrawDebugLine(GetWorld(),Origin,Hit.GetActor()->GetActorLocation(),FColor::Orange,false,0.5,0,6 );
-			return true;	
-		}*/
+		}				
+
 	}
 
 	return false;

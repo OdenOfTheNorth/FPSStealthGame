@@ -2,6 +2,7 @@
 
 #include "BaseEnemy.h"
 #include "FGEnemy.generated.h"
+class AFGAIGameMode;
 /*
 class USkeletalMeshComponent;
 class UCapsuleComponent;
@@ -30,9 +31,10 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	//UFUNCTION(BlueprintCallable)
-	//void Shot() override;
 
+	
+	//static TArray<AFGEnemy*> FGEnemys;
+	//static void GetAllFGEnemys(TArray<AFGEnemy*> out);
 	
 	float BaseDamage;
 };

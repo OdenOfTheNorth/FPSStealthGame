@@ -16,6 +16,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "FGScreamer.h"
 //#include "ToolBuilderUtil.h"
+#include "FGAIGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
 static int32 DebugWeaponDrawing = 0;
@@ -54,19 +55,18 @@ float AFGEnemy::GetDefaultHalfHeight() const
 void AFGEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	if (!EquippedWeapon) return;
-	WeaponPtr = GetWorld()->SpawnActor<ABaseWeapon>(EquippedWeapon);	
-	WeaponPtr->SetOwner(this);
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABaseEnemy::StaticClass(), BaseArray);
 
-	QueryParams.AddIgnoredActor(this);	
+	GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameMode(this));
 
-	for(AActor* Base : BaseArray)
+	if (GameMode != nullptr)
 	{
-		ABaseEnemy* BaseEnemy = Cast<ABaseEnemy>(Base);
-		QueryParams.AddIgnoredActor(BaseEnemy);	
+		GameMode->BaseEnemys.Add(this);
+		GameMode->FGEnemys.Add(this);
 	}
-	
+	else 
+	{
+		UE_LOG(LogTemp,Warning, TEXT("GameMode wasn nullptr , AFGEnemy.cpp"));
+	}
 }
 
 void AFGEnemy::Tick(float DelatTime)
@@ -75,30 +75,6 @@ void AFGEnemy::Tick(float DelatTime)
 
 	RotateTowardsMovementDirection(NavMovementComponent);	
 }
-
-/*void AFGEnemy::Shot()
-{
-	FHitResult Hit;
-	if (GetWorld()->LineTraceSingleByChannel(Hit, GetActorLocation(), TargetingComponent->SensesInfo.SensedLocation, ECC_GameTraceChannel1, QueryParams))
-	{
-		// Blocking hit! Process damage
-		if (Hit.bBlockingHit)
-		{
-			AFGCharacter* HitCharacter = Cast<AFGCharacter>(Hit.GetActor());			
-			if (HitCharacter == nullptr) return;
-			UE_LOG(LogTemp,Warning,TEXT("HitCharacter is not nullptr"));
-			UHealthComponent* HitActorHealthComponent = HitCharacter->GetHealthComponent();
-			if (HitActorHealthComponent == nullptr) return;
-			UE_LOG(LogTemp,Warning,TEXT("HitActorHealthComponent is not nullptr"));
-			HitActorHealthComponent->TakeDamage(Hit, BaseDamage, this);
-		}
-	}		
-
-	if (DebugWeaponDrawing > 0)
-	{
-		DrawDebugLine(GetWorld(), GetOwner()->GetActorLocation(), TargetingComponent->SensesInfo.SensedLocation, FColor::White, false, 1.0f, 0, 1.0f);
-	}
-}*/
 
 void AFGEnemy::RotateTowardsMovementDirection(const UFGNavMovementComponent* NavMoveComponent)
 {

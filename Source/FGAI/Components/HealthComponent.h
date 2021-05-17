@@ -11,7 +11,7 @@ struct FstructDead
 	GENERATED_BODY()
 public:
 	UPROPERTY()
-	bool Alive = false;
+	bool Alive = true;
 };
 
 struct FSensesInfo;
@@ -32,9 +32,11 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FIsDead IsDead;
-	
+
 	UPROPERTY(VisibleAnywhere)
-	float Health = 100;
+	float MaxHealth = 100;
+	UPROPERTY(VisibleAnywhere)
+	float Health;
 
 	FFGDamageSenseDelegate OnDamage;
 	

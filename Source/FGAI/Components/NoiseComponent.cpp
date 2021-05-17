@@ -7,8 +7,9 @@
 #include "FGAI/FGNoiseActor.h"
 #include "FGAI/Characters/FGEnemy.h"
 #include "FGAI/Components/NoiseComponent.h"
-
 #include "FGAI/AI/Sensing/FGHearingSenseComponent.h"
+#include "FGAI/AI/Sensing/FGTargetingComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UNoiseComponent::UNoiseComponent()
@@ -19,8 +20,15 @@ UNoiseComponent::UNoiseComponent()
 void UNoiseComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	FindAllEnemys(GetWorld(), EnemyArray);
+
+	GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameMode(this));
+
+	if (GameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("GameMode == nullptr , NoiseComponent.cpp"))
+	}
 }
+
 void UNoiseComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);	
@@ -28,31 +36,21 @@ void UNoiseComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 void UNoiseComponent::SpawnNoise() 
 {
+	//ABaseEnemy::GetAllBaseEnemys(EnemyArray);
+	
 	AFGNoiseActor* NoiseActor = GetWorld()->SpawnActor<AFGNoiseActor>(GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
 	NoiseActor->Radius = NoiseRadius;
 	NoiseActor->NoiseInstigator = GetOwner();
+
+	if (GameMode == nullptr) return;
 	
-	for (AFGEnemy* Enemy : EnemyArray)
+	GameMode->NoiseActorsList.Add(NoiseActor);
+	
+	for (ABaseEnemy* Enemy : GameMode->BaseEnemys)
 	{
-		Enemy->HearingSensingComponent->CheakNoise();	//FindAllNoiseActors(GetWorld(), Enemy->HearingSensingComponent->FoundActors);
-	}
-}
-
-//void UNoiseComponent::FindAllNoiseActors(UWorld* World, TArray<AFGNoiseActor*>& Out)
-//{
-//	for(TActorIterator<AFGNoiseActor> It(World); It; ++It)
-//	{
-//		AFGNoiseActor* Actor = *It;
-//		Out.Add(Actor);
-//	}
-//}
-
-void UNoiseComponent::FindAllEnemys(UWorld* World, TArray<AFGEnemy*>& Out)
-{
-	for(TActorIterator<AFGEnemy> It(World); It; ++It)
-	{
-		AFGEnemy* Actor = *It;
-		Out.Add(Actor);
+		if (Enemy == nullptr) continue;
+	
+		Enemy->HearingSensingComponent->CheakNoise(GameMode->NoiseActorsList);	//FindAllNoiseActors(GetWorld(), Enemy->HearingSensingComponent->FoundActors);
 	}
 }
 

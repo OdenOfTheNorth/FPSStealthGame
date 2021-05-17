@@ -14,6 +14,7 @@
 #include "FGAI/Characters/FGScreamer.h"
 #include "FGAI/Components/NoiseComponent.h"
 #include "FGAI/Weapons/BaseWeapon.h"
+#include "Kismet/GameplayStatics.h"
 #include "Math/NumericLimits.h"
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -32,7 +33,7 @@ void UUFG_AI_Idle::Setup()
 FName UUFG_AI_Idle::TickActive(float DeltaTime)
 {
 	//TODO Make This not ugly, sleep on it.
-	UE_LOG(LogTemp,Warning,TEXT("StateName : %s"),*StateName.ToString());
+	//UE_LOG(LogTemp,Warning,TEXT("StateName : %s  , FGAIState.cpp"),*StateName.ToString());
 
 	if (OwnerPawn->GetActorLocation() != OriginPos)
 	{
@@ -44,6 +45,7 @@ FName UUFG_AI_Idle::TickActive(float DeltaTime)
 
 void UUFG_AI_Idle::OnActivated()
 {
+	UE_LOG(LogTemp,Warning,TEXT("StateName : %s  , FGAIState.cpp"),*StateName.ToString());
 	//WaitTimeRemaining = Wait;
 	//TargetingComponent->bNoiseHeard = false;
 	//TargetingComponent->bSeenPlayer = false;
@@ -72,11 +74,11 @@ FName UFG_AI_Suspicious::TickActive(float DeltaTime)
 {
 	//TODO Make This not ugly, sleep on it.
 
-	UE_LOG(LogTemp,Warning,TEXT("StateName : %s"),*StateName.ToString());
+	//UE_LOG(LogTemp,Warning,TEXT("StateName : %s"),*StateName.ToString());
 	
 	WaitTimeRemaining -= GetWorld()->DeltaTimeSeconds;
 	
-	UE_LOG(LogTemp,Warning,TEXT("WaitTimeRemaining : %f"),WaitTimeRemaining);
+	//UE_LOG(LogTemp,Warning,TEXT("WaitTimeRemaining : %f"),WaitTimeRemaining);
 	
 	if (WaitTimeRemaining < 0)
 	{
@@ -89,12 +91,13 @@ FName UFG_AI_Suspicious::TickActive(float DeltaTime)
 
 void UFG_AI_Suspicious::OnActivated()
 {
+	UE_LOG(LogTemp,Warning,TEXT("StateName : %s  , FGAIState.cpp"),*StateName.ToString());
 	WaitTimeRemaining = Wait;
 	TimeToChangeToPatrol = WaitPatrol;
 	TimesToLook = 0;
 	
-	UE_LOG(LogTemp,Warning,TEXT("WaitTimeRemaining : %f"),WaitTimeRemaining);
-	UE_LOG(LogTemp,Warning,TEXT("TimeToChangeToPatrol : %f"),TimeToChangeToPatrol);
+	//UE_LOG(LogTemp,Warning,TEXT("WaitTimeRemaining : %f"),WaitTimeRemaining);
+	//UE_LOG(LogTemp,Warning,TEXT("TimeToChangeToPatrol : %f"),TimeToChangeToPatrol);
 	TargetingComponent->Move(TargetingComponent->SensesInfo.SensedLocation);
 }
 
@@ -117,8 +120,8 @@ FName UFG_AI_Patrolling::TickActive(float DeltaTime)
 {
 	Super::TickActive(DeltaTime);
 
-	UE_LOG(LogTemp,Warning,TEXT("StateName : %s"),*StateName.ToString());
-	UE_LOG(LogTemp,Warning,TEXT("WaitTimeRemaining : %f"),WaitTimeRemaining);
+	//UE_LOG(LogTemp,Warning,TEXT("StateName : %s"),*StateName.ToString());
+	//UE_LOG(LogTemp,Warning,TEXT("WaitTimeRemaining : %f"),WaitTimeRemaining);
 	
 	WaitTimeRemaining -= GetWorld()->DeltaTimeSeconds;
 	if(WaitTimeRemaining < 0)
@@ -133,6 +136,7 @@ FName UFG_AI_Patrolling::TickActive(float DeltaTime)
 
 void UFG_AI_Patrolling::OnActivated()
 {
+	UE_LOG(LogTemp,Warning,TEXT("StateName : %s  , FGAIState.cpp"),*StateName.ToString());
 	WaitTimeRemaining = Wait;
 }
 
@@ -151,35 +155,36 @@ void UFG_AI_Attacking::Setup()
 
 FName UFG_AI_Attacking::TickActive(float DeltaTime)
 {
-	UE_LOG(LogTemp,Warning,TEXT("StateName : %s"),*StateName.ToString());
+	//UE_LOG(LogTemp,Warning,TEXT("StateName : %s"),*StateName.ToString());
 
 	FString Name = TargetingComponent->SensesInfo.SensedActor->GetName();
 	
 	if (TargetingComponent->SensesInfo.SensedActor == nullptr)
 	{
-		UE_LOG(LogTemp,Warning, TEXT("SensedActor Is nullptr"));
+		UE_LOG(LogTemp,Warning, TEXT("SensedActor Is nullptr , FGAIState.cpp"));
 		return PendingStateName;
 	}
-
-	UE_LOG(LogTemp, Warning,TEXT(" TargetingComponent->SensesInfo.SensedActor = %s"), *Name);
+	/*
+	UE_LOG(LogTemp, Warning,TEXT(" TargetingComponent->SensesInfo.SensedActor = %s , FGAIState.cpp"), *Name);
 	
 	UHealthComponent* HealthComp = Cast<UHealthComponent>(TargetingComponent->SensesInfo.SensedActor);
 	
 	if (HealthComp != nullptr)
 	{
-		UE_LOG(LogTemp,Warning, TEXT("HealthComp Is not nullptr"));
+		UE_LOG(LogTemp,Warning, TEXT("Player HealthComp Is not nullptr"));
 		HealthComp->TakeDamage(TargetingComponent->SensesInfo.SensedHit, 5 * GetWorld()->DeltaTimeSeconds, OwnerPawn);
 	}
 	else
 	{
-		UE_LOG(LogTemp,Warning, TEXT("HealthComp Is nullptr"));
-	}
+		UE_LOG(LogTemp,Warning, TEXT("Player HealthComp Is nullptr, FGAIState.cpp"));
+	}*/
 	
 	return PendingStateName;
 }
 
 void UFG_AI_Attacking::OnActivated()
 {
+	UE_LOG(LogTemp,Warning,TEXT("StateName : %s  , FGAIState.cpp"),*StateName.ToString());
 }
 
 void UFG_AI_Attacking::OnDeactivated()
@@ -206,7 +211,8 @@ FName UFG_AI_Running::TickActive(float DeltaTime)
 
 void UFG_AI_Running::OnActivated()
 {
-	
+	UE_LOG(LogTemp,Warning,TEXT("StateName : %s  , FGAIState.cpp"),*StateName.ToString());
+	GetNerestOfficer();
 }
 
 void UFG_AI_Running::GetNerestOfficer()
@@ -216,8 +222,15 @@ void UFG_AI_Running::GetNerestOfficer()
 		AFGScreamer* screamer = Cast<AFGScreamer>(OwnerPawn);
 		UNoiseComponent* noise = screamer->GetNoiseComponent();
 		TArray<AFGEnemy*> Enemys;
-		
-		noise->FindAllEnemys(GetWorld(),Enemys);
+
+		AFGAIGameMode* GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameMode(this));
+
+		GameMode->GetAllFGEnemys(Enemys);
+
+		if (Enemys.Num() == 0)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Enemys is 0  ,FGAIState.cpp"))
+		}
 
 		AFGEnemy* OfficerToMoveTo = nullptr;
 		if (Enemys.Num() != 0)

@@ -8,6 +8,7 @@
 #include "GameFramework/Pawn.h"
 #include "BaseEnemy.generated.h"
 
+class AFGAIGameMode;
 class USkeletalMeshComponent;
 class UCapsuleComponent;
 class UCameraComponent;
@@ -55,16 +56,18 @@ public:
 	UFGVisionSensingTargetComponent* VisionTargetComponent;
 	
 	//Weapon
-	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)			//EquippedWeapon
-	TSubclassOf<ABaseWeapon> EquippedWeapon;		
-	ABaseWeapon* WeaponPtr;										//WeaponPtr
+	//UPROPERTY(VisibleDefaultsOnly, Category = Weapon)			//EquippedWeapon
+	//TSubclassOf<ABaseWeapon> EquippedWeapon;		
+	//ABaseWeapon* WeaponPtr;										//WeaponPtr
 	
 	void RotateTowardsMovementDirection(const UFGNavMovementComponent* NavMoveComponent);
 	virtual float GetDefaultHalfHeight() const override;
 	virtual void Tick(float DeltaTime) override;
+
 	//UFUNCTION(BlueprintCallable)
-	//virtual void Shot();
-	TArray<AActor*> BaseArray;
+	//void RemoveFromBaseEnemys();
+	AFGAIGameMode* GameMode;
+
 	FCollisionQueryParams QueryParams;	
 
 	//Get Components
@@ -83,4 +86,8 @@ public:
 	protected:
 	virtual void BeginPlay();
 	UCapsuleComponent* GetCapsule() const { return Capsule; }
+
+public:
+	//static TArray<ABaseEnemy*> BaseEnemys;
+	//static void GetAllBaseEnemys(TArray<ABaseEnemy*> out);
 };

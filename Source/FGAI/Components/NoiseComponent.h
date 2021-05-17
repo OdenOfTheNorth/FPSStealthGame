@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "FGAI/Characters/FGAIGameMode.h"
+
 #include "NoiseComponent.generated.h"
 
 class AFGEnemy;
 class AFGNoiseActor;
 class NoiseActor;
+class ABaseEnemy;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class FGAI_API UNoiseComponent : public UActorComponent
@@ -23,12 +26,13 @@ public:
 
 	void SpawnNoise();
 
+	AFGAIGameMode* GameMode;
+
 	//void UNoiseComponent::FindAllNoiseActors(UWorld* World, TArray<AFGNoiseActor*>& Out);
 
-	TArray<AFGEnemy*> EnemyArray;
+	//TArray<ABaseEnemy*> EnemyArray;
 	
-	void FindAllEnemys(UWorld* World, TArray<AFGEnemy*>& Out);
-protected:
+	protected:
 	virtual void BeginPlay() override;
 
 public:	

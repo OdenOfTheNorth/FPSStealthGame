@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "FGAIGameMode.generated.h"
 
+class ABaseEnemy;
+class AFGEnemy;
 class AFGNoiseActor;
 
 UCLASS(minimalapi)
@@ -15,13 +17,18 @@ class AFGAIGameMode : public AGameModeBase
 
 public:
 	AFGAIGameMode();
-	
-	TArray<AFGNoiseActor*> FoundActors;
-	/*
-	void GetAllNoiseActors(UWorld* World, TArray<AFGNoiseActor*>& OutActors);
 
-	void SpawnNoiseActors(FVector SpawnLocation);
-	void SpawnNoiseActors(FVector SpawnLocation, float SoundRadius = 350);*/
+	//static AFGAIGameMode* GameMode;
+
+	
+	static TArray<ABaseEnemy*> BaseEnemys;
+    void GetAllBaseEnemys(TArray<ABaseEnemy*> Out);
+
+	static TArray<AFGEnemy*> FGEnemys;
+	void GetAllFGEnemys(TArray<AFGEnemy*> Out);
+
+	static TArray<AFGNoiseActor*> NoiseActorsList;	
+	void GetNoiseActors(TArray<AFGNoiseActor*> NoiseActors);	
 };
 
 

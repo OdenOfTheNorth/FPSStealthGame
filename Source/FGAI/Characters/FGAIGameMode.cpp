@@ -1,32 +1,41 @@
 #include "FGAIGameMode.h"
-#include "EngineUtils.h"
 #include "FGAI/FGNoiseActor.h"
+#include "BaseEnemy.h"
+
+TArray<AFGEnemy*> AFGAIGameMode::FGEnemys;
+TArray<AFGNoiseActor*> AFGAIGameMode::NoiseActorsList;
+TArray<ABaseEnemy*> AFGAIGameMode::BaseEnemys;
 
 AFGAIGameMode::AFGAIGameMode()	: Super()
 {
 }
-/*
-void AFGAIGameMode::GetAllNoiseActors(UWorld* World, TArray<AFGNoiseActor*>& OutActors)
+
+void AFGAIGameMode::GetAllBaseEnemys(TArray<ABaseEnemy*> Out)
 {
-	for(TActorIterator<AFGNoiseActor> It(World); It; ++It)
+	for (ABaseEnemy* base : BaseEnemys)
 	{
-		AFGNoiseActor* Actor = *It;
-		OutActors.Add(Actor);
+		if (base == nullptr)	continue;
+		
+		Out.Add(base);
 	}
 }
 
-void AFGAIGameMode::SpawnNoiseActors(FVector SpawnLocation)
+void AFGAIGameMode::GetAllFGEnemys(TArray<AFGEnemy*> Out)
 {
-	auto* NoiseActor = GetWorld()->SpawnActor<AFGNoiseActor>(GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
-	GetAllNoiseActors(GetWorld(),FoundActors);
+	for (AFGEnemy* FGEnemy : FGEnemys)
+	{
+		if (FGEnemy == nullptr)	continue;;
+		
+		Out.Add(FGEnemy);
+	}
 }
 
-void AFGAIGameMode::SpawnNoiseActors(FVector SpawnLocation, float SoundRadius)
+void AFGAIGameMode::GetNoiseActors(TArray<AFGNoiseActor*> NoiseActors)
 {
-	auto* NoiseActor = GetWorld()->SpawnActor<AFGNoiseActor>(GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
-	NoiseActor->Radius = SoundRadius;
-	GetAllNoiseActors(GetWorld(),FoundActors);
-}*/
-
-
-
+	for (AFGNoiseActor* NoiseA : NoiseActorsList)
+	{
+		if (NoiseA == nullptr)	continue;
+		
+		NoiseActors.Add(NoiseA);
+	}
+}

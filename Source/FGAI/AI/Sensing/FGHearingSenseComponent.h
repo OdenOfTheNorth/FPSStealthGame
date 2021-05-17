@@ -3,32 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 #include "Components/ActorComponent.h"
 #include "FGHearingSenseComponent.generated.h"
 
 
+class ABaseEnemy;
 class AFGNoiseActor;
-USTRUCT(BlueprintType)
-struct FFGHearingInfo
-{
-	GENERATED_BODY()
-public:
-	AActor* NoiseInstigator;
-	FVector NoiseLocation;
-	bool bHeardNoise = false;
-	float Range;
-};
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType,BlueprintType)
 struct FSensesInfo
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	AActor* SensedActor;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	FVector SensedLocation;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	bool bSensedActor = false;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	float Range;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	FHitResult SensedHit;
 };
 
@@ -45,22 +40,18 @@ public:
 	UPROPERTY(EditAnywhere)
 	float HearingRange = 1000.f;
 
-	void CheakNoise();
-
-	FSensesInfo HearingInfo;
-	//FFGHearingInfo HearingInfo;
+	void CheakNoise(TArray<AFGNoiseActor*> FoundActors);
+	
 	UPROPERTY(BlueprintAssignable)
 	FFGHearingSenseDelegate OnNoiseHeard;
 
-	void FindAllNoiseActor(UWorld* World, TArray<AFGNoiseActor*>& Out);
+	ABaseEnemy* Owner;
 
-	TArray<AFGNoiseActor*> FoundActors;
+	//void GetAllNoiseActor(UWorld* World, TArray<AFGNoiseActor*>& Out);
 
 protected:
 	virtual void BeginPlay() override;
 
 public:	
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;		
 };

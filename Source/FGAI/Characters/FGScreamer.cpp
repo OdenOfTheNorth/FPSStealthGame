@@ -3,6 +3,7 @@
 
 #include "FGScreamer.h"
 #include "AIController.h"
+#include "FGAIGameMode.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "FGAI/AI/Sensing/FGVisionSensingComponent.h"
@@ -13,6 +14,7 @@
 #include "FGAI/AI/Sensing/FGTargetingComponent.h"
 #include "FGAI/Components/NoiseComponent.h"
 #include "FGAI/Weapons/BaseWeapon.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -39,12 +41,23 @@ AFGScreamer::AFGScreamer()
 }
 
 // Called when the game starts or when spawned
-/*
+
 void AFGScreamer::BeginPlay()
 {
 	Super::BeginPlay();
 	
-}*/
+	GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameMode(this));
+
+	if (GameMode)
+	{
+		GameMode->BaseEnemys.Add(this);
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning, TEXT("AFGScreamer GameMode Was nullptr"));
+	}
+
+}
 
 void AFGScreamer::RotateTowardsMovementDirection(const UFGNavMovementComponent* NavMoveComponent)
 {

@@ -18,6 +18,9 @@ void UFGTargetingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	ABaseEnemy* Base = Cast<ABaseEnemy>(GetOwner());
+
+	if (Base == nullptr) return;
+	
 	VisionSensingComponent = Base->GetVisionSensingComponent();																//GetOwner()->FindComponentByClass<UFGVisionSensingComponent>();
 	HealthComponent = Base->GetHealthComponent();																			//GetOwner()->FindComponentByClass<UHealthComponent>();
 	HearingSensingComponent = Base->GetHearingSensingComponent();															//GetOwner()->FindComponentByClass<UFGHearingSenseComponent>();
@@ -48,20 +51,17 @@ void UFGTargetingComponent::BeginPlay()
 void UFGTargetingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	//if ("Sus" == StateMachine->GetStateFromName(StateMachine->CurrentState->TickActive(DeltaTime)))
-	//{
-	//	
-	//}
 }
 
 void UFGTargetingComponent::Handle_DamageSense(const FSensesInfo& DamageSenseInfo)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Handle_DamageSense"));
 	SensesInfo = DamageSenseInfo;
 }
 
 void UFGTargetingComponent::Handle_VisionSense(const FSensesInfo& VisionSenseInfo)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Handle_VisionSense"));
 	SensesInfo = VisionSenseInfo;
 
 	AFGCharacter* Player = Cast<AFGCharacter>(SensesInfo.SensedActor);
@@ -75,12 +75,16 @@ void UFGTargetingComponent::Handle_VisionSense(const FSensesInfo& VisionSenseInf
 			StateMachine->PlayerSeen();
 	
 		if (Screamer)
-			StateMachine->Run();  
+		{
+			StateMachine->Run();
+			UE_LOG(LogTemp, Warning, TEXT("StateMachine->Run();"));
+		}
 	}        
 }
 
 void UFGTargetingComponent::Handle_VisionLost(const FSensesInfo& VisionSenseInfo)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Handle_VisionLost"));
 	SensesInfo = VisionSenseInfo;
 
 	AFGCharacter* Player = Cast<AFGCharacter>(SensesInfo.SensedActor);
@@ -95,6 +99,7 @@ void UFGTargetingComponent::Handle_VisionLost(const FSensesInfo& VisionSenseInfo
 
 void UFGTargetingComponent::Handle_HearingSense(const FSensesInfo& HearingSenseInfo)
 {	
+	UE_LOG(LogTemp, Warning, TEXT("Handle_HearingSense"));
 	SensesInfo = HearingSenseInfo;
 	StateMachine->Suspicious();
 }

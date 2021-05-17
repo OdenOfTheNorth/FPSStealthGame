@@ -28,14 +28,14 @@ void UHealthComponent::TakeDamage(FHitResult Hit, float Damage, AActor* DamageIn
 	DamageInfo.SensedLocation = (Hit.TraceStart - Hit.ImpactPoint).GetSafeNormal();
 	DamageInfo.SensedActor = DamageInstigator;
 	DamageInfo.SensedHit = Hit;
-	//DamageInfo.DamageImpactLocation = Hit.ImpactPoint;
 	DamageInfo.bSensedActor = true;
 	OnDamage.Broadcast(DamageInfo);	
 }
 
 void UHealthComponent::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
+	Health = MaxHealth;
 }
 
 void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

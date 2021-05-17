@@ -6,8 +6,7 @@
 #include "BaseEnemy.h"
 #include "FGScreamer.generated.h"
 
-
-
+class AFGAIGameMode;
 UCLASS()
 class FGAI_API AFGScreamer : public ABaseEnemy
 {
@@ -18,11 +17,13 @@ class FGAI_API AFGScreamer : public ABaseEnemy
 	
 	void RotateTowardsMovementDirection(const UFGNavMovementComponent* NavMoveComponent);
 	virtual float GetDefaultHalfHeight() const override;
+	virtual void BeginPlay();
 	virtual void Tick(float DeltaTime) override;
 	void RotateTowardsDirection(FVector direction, float Speed);
 	
 	protected:
 	//virtual void BeginPlay();
 	UCapsuleComponent* GetCapsule() const { return Capsule; }
+
 
 };
