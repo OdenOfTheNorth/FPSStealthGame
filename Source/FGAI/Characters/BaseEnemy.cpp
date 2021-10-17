@@ -11,6 +11,20 @@ ABaseEnemy::ABaseEnemy()
 	
 }
 
+void ABaseEnemy::BeginDestroy()
+{
+	Super::BeginDestroy();
+	//GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameState(this));	
+	GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameMode(this));
+
+	if (GameMode)
+	{
+		GameMode->BaseEnemys.Remove(this);
+	}
+	
+	//
+}
+
 // Called when the game starts or when spawned
 void ABaseEnemy::BeginPlay()
 {

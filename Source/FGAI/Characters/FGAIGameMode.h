@@ -18,16 +18,14 @@ class AFGAIGameMode : public AGameModeBase
 public:
 	AFGAIGameMode();
 
-	//static AFGAIGameMode* GameMode;
-
-	
-	static TArray<ABaseEnemy*> BaseEnemys;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<ABaseEnemy*> BaseEnemys;
     void GetAllBaseEnemys(TArray<ABaseEnemy*> Out);
-
-	static TArray<AFGEnemy*> FGEnemys;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<AFGEnemy*> FGEnemys;
 	void GetAllFGEnemys(TArray<AFGEnemy*> Out);
-
-	static TArray<AFGNoiseActor*> NoiseActorsList;	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<AFGNoiseActor*> NoiseActorsList;	
 	void GetNoiseActors(TArray<AFGNoiseActor*> NoiseActors);	
 };
 

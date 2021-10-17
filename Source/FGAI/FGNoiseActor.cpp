@@ -3,6 +3,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Actor.h"
 #include "EngineUtils.h"
+#include "Characters/FGAIGameMode.h"
 
 AFGNoiseActor::AFGNoiseActor()
 {
@@ -11,11 +12,26 @@ AFGNoiseActor::AFGNoiseActor()
 	RootComponent = Root;
 }
 
+void AFGNoiseActor::BeginDestroy()
+{
+	Super::BeginDestroy();
+	AFGAIGameMode* GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameMode(this));
+	if (GameMode)
+	{
+		GameMode->NoiseActorsList.Remove(this);
+	}
+}
+
 void AFGNoiseActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//NoiseActorsList.Add(this);
+	AFGAIGameMode* GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameMode(this)); // GetGameMode
+
+	if (GameMode)
+	{
+		GameMode->NoiseActorsList.Add(this);
+	}	
 	
 	SetLifeSpan(0.4);	
 }

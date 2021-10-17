@@ -29,6 +29,7 @@ class FGAI_API ABaseEnemy : public APawn
 
 public:
 	ABaseEnemy();
+	virtual void BeginDestroy() override;
 	UPROPERTY(VisibleDefaultsOnly, Category = Collision)
 	UCapsuleComponent* Capsule;
 
@@ -66,6 +67,8 @@ public:
 
 	//UFUNCTION(BlueprintCallable)
 	//void RemoveFromBaseEnemys();
+
+	UPROPERTY()
 	AFGAIGameMode* GameMode;
 
 	FCollisionQueryParams QueryParams;	

@@ -21,8 +21,9 @@ class AFGEnemy : public ABaseEnemy
 	GENERATED_BODY()
 public:
 	AFGEnemy();
+	virtual void BeginDestroy() override;
 	
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 	
 	void RotateTowardsMovementDirection(const UFGNavMovementComponent* NavMoveComponent);
 	void RotateTowardsDirection(FVector direction, float Speed);

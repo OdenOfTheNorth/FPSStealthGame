@@ -4,6 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "FGAI/FGNoiseActor.h"
 #include "Kismet/GameplayStatics.h"
+#include "FGAI/Characters/FGAIGameMode.h"
 
 UFGHearingSenseComponent::UFGHearingSenseComponent()
 {
@@ -19,11 +20,13 @@ void UFGHearingSenseComponent::CheakNoise(TArray<AFGNoiseActor*> FoundActors)
 	
 	//Todo fixed only cheak for noise when it's spwaned	
 
-	//AFGAIGameMode* GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameInstance(GetWorld())); 
+	GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameMode(this));	//Cast<AFGAIGameMode>()
 	//AFGNoiseActor::GetNoiseActors(FoundActors);
 	//FindAllNoiseActor(GetWorld(),FoundActors);
 	//GameMode->GetNoiseActors(FoundActors);	
 	//OwnerEnemy = Cast<ABaseEnemy>(GetOwner());
+
+	GameMode->GetNoiseActors(FoundActors);
 
 	if (GetOwner() != nullptr)
 	{

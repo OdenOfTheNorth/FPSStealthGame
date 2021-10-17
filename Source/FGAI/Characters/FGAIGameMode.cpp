@@ -2,10 +2,6 @@
 #include "FGAI/FGNoiseActor.h"
 #include "BaseEnemy.h"
 
-TArray<AFGEnemy*> AFGAIGameMode::FGEnemys;
-TArray<AFGNoiseActor*> AFGAIGameMode::NoiseActorsList;
-TArray<ABaseEnemy*> AFGAIGameMode::BaseEnemys;
-
 AFGAIGameMode::AFGAIGameMode()	: Super()
 {
 }

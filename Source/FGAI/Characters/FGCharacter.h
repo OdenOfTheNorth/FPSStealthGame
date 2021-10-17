@@ -31,7 +31,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Sound)
 	UNoiseComponent* NoiseComponent;
 
-	UPROPERTY(VisibleAnywhere, Category = Health)
+	UPROPERTY(BlueprintReadWrite,VisibleAnywhere , Category = Health)
 	UHealthComponent* HealthComponent;
 
 	/** First person camera */
@@ -55,6 +55,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AImpaleProjectile> ImpaleProjectile;
+
+	UFUNCTION(BlueprintCallable)
+	float GetHealth()	{		return HealthComponent->Health;	};
+	UFUNCTION(BlueprintCallable)
+	float GetMaxHealth()	{		return HealthComponent->MaxHealth;	};
 
 protected:
 	virtual void BeginPlay();

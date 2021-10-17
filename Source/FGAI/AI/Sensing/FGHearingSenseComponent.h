@@ -7,6 +7,7 @@
 #include "FGHearingSenseComponent.generated.h"
 
 
+class AFGAIGameMode;
 class ABaseEnemy;
 class AFGNoiseActor;
 
@@ -46,6 +47,7 @@ public:
 	FFGHearingSenseDelegate OnNoiseHeard;
 
 	ABaseEnemy* Owner;
+	AFGAIGameMode* GameMode;
 
 	//void GetAllNoiseActor(UWorld* World, TArray<AFGNoiseActor*>& Out);
 

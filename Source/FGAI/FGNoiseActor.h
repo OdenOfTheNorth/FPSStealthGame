@@ -11,6 +11,7 @@ class FGAI_API AFGNoiseActor : public AActor
 	GENERATED_BODY()	
 public:	
 	AFGNoiseActor();
+	virtual void BeginDestroy() override;
 	UPROPERTY()
 	USceneComponent* Root;
 	

@@ -45,6 +45,21 @@ AFGEnemy::AFGEnemy()
 	StateMachine = CreateDefaultSubobject<UFGStateMachineComponent>(TEXT("StateMachineComponent"));
 	TargetingComponent = CreateDefaultSubobject<UFGTargetingComponent>(TEXT("TargetingComponent"));
 	VisionTargetComponent = CreateDefaultSubobject<UFGVisionSensingTargetComponent>(TEXT("VisionTarget"));
+
+	
+}
+
+void AFGEnemy::BeginDestroy()
+{
+	Super::BeginDestroy();
+	GameMode = Cast<AFGAIGameMode>(UGameplayStatics::GetGameMode(this));
+
+	if (GameMode)
+	{
+		GameMode->FGEnemys.Remove(this);
+        GameMode->BaseEnemys.Remove(this);
+	}
+
 }
 
 float AFGEnemy::GetDefaultHalfHeight() const
